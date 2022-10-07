@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{bookname}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+    <h1> Student Home </h1>
+
+    {% include 'student_navbar.html' %}
+    <div class="card-body d-flex align-items-center justify-content-center">
+        <div class="col-sm-4.5 p-4 ">
+            <div class="card mx-auto" style="background-color: rgba(211, 210, 210, 0.897); width: 30rem; height: 100%;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <img src="{% static bookimage %}" alt="{bookname} cover image" width="100" height="auto" />
+                    <p class="card-text">{{bookname}}</p>
+                    <p class="card-text"> Author : {{author}}</p>
+                    <p class="card-text"> Summary : {{summary}}</p>
+                    <form action="/request-book/{{bookid}}/{{rollno}}/" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-success" type="submit" name="request-btn" {% if visited or flag or temp or limit %} disabled {% endif %}>Request</button>
+                    </form>
+                    {% if visited %}
+                        <p> Request Has Been Sent </p>
+                    {% endif %}
+                    {% if flag %} 
+                        <p> Not Available </p>
+                    {% endif %}
+                    {% if temp %} 
+                        <p> Cannot request for next 24 hours </p>
+                    {% endif %}
+                    {% if limit %} 
+                        <p> limit Exceeded </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

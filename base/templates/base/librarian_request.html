@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Librarian Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1> View Requests </h1>
+
+    {% include 'librarian_navbar.html' %}
+
+    {% if error_message != None %} 
+        <h3> {{error_message}}</h3>
+    {% endif %}
+
+    <br />
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Roll No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Book Name</th>
+                <th scope="col">Author</th>
+                <th scope="col"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lendings in booklending_list %}
+            <tr>
+                <td>{{lendings.rollno}}</td>
+                <td>{{lendings.name}}</td>
+                <td>{{lendings.bookname}}</td>
+                <td>{{lendings.author}}</td>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center" style="gap:5px;">
+                        <form action="/viewRequests/{{ lendings.rollno }}/{{ lendings.bookid }}/1/" method="post">
+                            {% csrf_token %}
+                            <input class="btn btn-outline-success" type="submit" name="approve-btn" value="Approve" />
+                        </form>
+                        <form action="/viewRequests/{{ lendings.rollno }}/{{ lendings.bookid }}/0/" method="post">
+                            {% csrf_token %}
+                            <input class="btn btn-outline-danger" type="submit" name="reject-btn" value="Reject" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+</body>
