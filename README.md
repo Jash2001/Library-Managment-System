@@ -1,4 +1,4 @@
-# Library-Managment-System
+# Library Managment System
 
 Frontend : HTML, Bootstrap\
 Backend : Django\
