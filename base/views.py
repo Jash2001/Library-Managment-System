@@ -146,7 +146,7 @@ def studentHome(request):
 def studentHomeList(request, rollno):
     search = request.POST.get('search')
     booklendings_list = list()
-
+    # bookObjects_list = list()
     for book in BookLendings.objects():
         books = book.to_json()
         if books['rollno'] == int(rollno) and (books['pending'] == 1 or books['approved'] == 1):
@@ -166,9 +166,12 @@ def studentHomeList(request, rollno):
             elif search.lower() in book['author'].lower():
                 booksObjects_list.append(book)
                 flag = True
-    
+
         if flag:
-            return render(request, "base/student_home.html", {"bookObjects_list" : booksObjects_list, "rollno":rollno})
+            p = Paginator(booksObjects_list, 3)
+            page = request.GET.get('page')
+            home = p.get_page(page)
+            return render(request, "base/student_home.html", {"bookObjects_list" : booksObjects_list, "rollno":rollno, "home" : home})
         else:
             return render(request, "base/student_home.html", {"error_message" : "There is no such book", "rollno" : rollno})
     bookObjects_list = list()
